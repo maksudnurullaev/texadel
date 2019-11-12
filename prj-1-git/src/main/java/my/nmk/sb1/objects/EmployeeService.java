@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 
-import my.nmk.sb1.jpa.objects.Skill;
 import my.nmk.sb1.jpa.repositories.EmployeesRepository;
 import my.nmk.sb1.jpa.repositories.SkillsRepository;
 

@@ -1,11 +1,17 @@
 package my.nmk.sb1.objects;
 
+import java.util.HashSet;
 import java.util.Map;
-//import java.util.concurrent.atomic.AtomicLong;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import org.springframework.util.StringUtils;
 
@@ -13,6 +19,7 @@ import my.nmk.sb1.annotations.Described;
 
 @Described
 @Entity
+@Table(name = "Employees")
 public class Employee {
 	@Id
 	@GeneratedValue
@@ -23,10 +30,34 @@ public class Employee {
     private String role;
     private String department;
     private String email;
+
+    @ManyToMany
+	@JoinTable(name="employees_and_skills", 
+		joinColumns = {@JoinColumn(name = "employee_id")},
+		inverseJoinColumns = {@JoinColumn(name = "skill_id")})    
+    Set<Skill> skills = new HashSet<Skill>();
     
-//    private static final AtomicLong counter = new AtomicLong(100);
-    
-    public Employee() {}
+    public Set<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(Set<Skill> skills) {
+		this.skills = skills;
+	}
+	
+	public boolean isContainSkill(Long skillId) {
+		return getSkills().stream().anyMatch(e -> e.getId() == skillId);
+	}
+	
+	public boolean haSkills() {
+		return skills.size() > 0;
+	}
+	
+	public String skillsAsString() {
+		return skills.stream().map(e -> e.getName()).collect(Collectors.joining(", "));
+	}
+
+	public Employee() {}
     
     private static final String[] validateFields = {"name", "lastName", "birthDate", "role", "department", "email"};
     

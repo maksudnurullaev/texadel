@@ -20,4 +20,6 @@ module my.nmk.sb1 {
 	requires spring.data.commons;
 	requires spring.web;
 	requires java.annotation;
+	requires org.hibernate.orm.core;
+	requires com.fasterxml.jackson.annotation;
 }

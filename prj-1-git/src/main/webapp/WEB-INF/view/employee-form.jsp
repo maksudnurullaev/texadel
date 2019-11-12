@@ -14,7 +14,7 @@
             <c:set var="action" value="new"/>
         </c:if>
         <div class="container">
-            <form action="/employee/${action}" method="post"  role="form" data-toggle="validator" >
+            <form action="/employee/${action}/${employee.id}" method="post"  role="form" data-toggle="validator" >
                 <input type="hidden" id="action" name="action" value="${action}">
                 <input type="hidden" id="id" name="id" value="${employee.id}">
                 <h2>Employee (${action})</h2>
@@ -36,6 +36,20 @@
 
                     <label for="department" class="control-label col-xs-4">E-mail:</label>                   
                     <input type="text" name="email" id="email" class="form-control" value="${employee.email}" placeholder="smith@aol.com" required="true"/>
+
+<c:choose>
+ <c:when test="${not empty skills}">
+ <hr />
+ <h3>Skills:</h3>
+ <fieldset>
+    <select multiple class="form-control" name="skills">
+     <c:forEach var="skill" items="${skills}">
+      <option value="${skill.id}" ${employee.isContainSkill(skill.id)?"selected":""}>${skill.name} - (${skill.description})</option>
+     </c:forEach>
+    </select>
+  </fieldset>
+ </c:when>
+</c:choose>
 
                     <br></br>
                     <button type="submit" class="btn btn-primary  btn-md">Accept</button> 

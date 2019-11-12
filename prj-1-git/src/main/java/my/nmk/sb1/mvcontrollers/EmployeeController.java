@@ -3,6 +3,8 @@ package my.nmk.sb1.mvcontrollers;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import my.nmk.sb1.jpa.repositories.EmployeesRepository;
+import my.nmk.sb1.jpa.repositories.SkillsRepository;
 import my.nmk.sb1.objects.Employee;
 import my.nmk.sb1.objects.EmployeeService;
+import my.nmk.sb1.objects.Skill;
 
 @Controller
 public class EmployeeController {
@@ -23,6 +27,8 @@ public class EmployeeController {
 	EmployeeService employeeService;
     @Autowired
     EmployeesRepository employeeRepository;
+    @Autowired
+    SkillsRepository skillsRepository;
 	
 	@GetMapping({"/employee/{action}", "/employee/{action}/{optional}"})
 	public String getActions(
@@ -40,6 +46,8 @@ public class EmployeeController {
 				logger.error(e.getMessage());
 			}
 			model.put("employee", employee);
+			logger.debug("Founded skills: " + skillsRepository.count());
+			model.put("skills",	skillsRepository.findAll());
 			break; 
 		case("del"):
 			if(optional.isPresent()) {
@@ -59,6 +67,7 @@ public class EmployeeController {
 			@PathVariable String action, 
 			@PathVariable(required = false) Optional<String> optional,
 			@RequestParam Map<String,String> postParams,
+			HttpServletRequest request,
 			Map<String, String> model) {
 		logger.debug("Employee's post action: " + action);
 		for(String key: postParams.keySet()) {
@@ -69,6 +78,17 @@ public class EmployeeController {
 		case("edit"):
 			if(Employee.validateDataMap(postParams)) {
 				Employee employee = new Employee(postParams);
+				// Update skills
+				if(action.equals("edit")) {
+					String[] skills = request.getParameterValues("skills");
+					for(String skill: skills) {
+						logger.debug("Choosen skills: " + skill);
+						Optional<Skill> optionalSkill = skillsRepository.findById(Long.parseLong(skill));
+						if(optional.isPresent()) {
+							employee.getSkills().add(optionalSkill.get());
+						}
+					}
+				}
 				employeeRepository.save(employee);
 				logger.debug("The employee saved for action: " + action.toUpperCase());
 				model.put("message", "Employee saved!");
@@ -88,6 +108,10 @@ public class EmployeeController {
 		}
 		return "forward:/";
 //		return "redirect:/";
+//		if( optional.isPresent()) {
+//			return String.format("redirect:/employee/%s/%s", action, optional.get());
+//		}
+//		return request.getRequestURL().toString() + "?" + request.getQueryString();
 	}
 
 }

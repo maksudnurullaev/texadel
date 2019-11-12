@@ -46,6 +46,7 @@
                            <td>Role</td>
                            <td>Department</td>
                            <td>E-mail</td>
+                           <td>Skills</td>
                            <td>&nbsp;</td>
                         </tr>
                      </thead>
@@ -62,6 +63,16 @@
                            <td>${employee.role}</td>
                            <td>${employee.department}</td>
                            <td>${employee.email}</td>
+                           <td>
+                            <c:choose>
+                             <c:when test="${employee.haSkills()}">
+	                             <span class="badge badge-success">${employee.skillsAsString()}</span>
+                             </c:when>
+                            <c:otherwise>
+                            	<span class="badge badge-secondary">No skills</span>
+                            </c:otherwise>
+                            </c:choose>
+                           </td>
                            <td>
                             <!-- Implement 'Are you sure' message! -->
                             <a href="/employee/del/${employee.id}" class="confirmation">X</a>
