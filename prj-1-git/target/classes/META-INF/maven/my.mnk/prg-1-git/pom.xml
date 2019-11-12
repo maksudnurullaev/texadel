@@ -69,5 +69,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<name>SimpleApp + Spring Boot + JSP + Bootstrap</name>
+	<name>SimpleApp + Spring Boot + JSP + Bootstrap v4</name>
 </project>
