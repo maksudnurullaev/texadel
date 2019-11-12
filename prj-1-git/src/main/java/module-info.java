@@ -9,7 +9,6 @@
 
 module my.nmk.sb1 {
 	requires java.persistence;
-	requires org.apache.commons.lang3;
 	requires org.apache.tomcat.embed.core;
 	requires org.aspectj.weaver;
 	requires org.slf4j;

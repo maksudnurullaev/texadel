@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 import my.nmk.sb1.annotations.Described;
 
@@ -44,7 +44,7 @@ public class Employee {
     	this.role = data.get("role"); 
     	this.department = data.get("department"); 
     	this.email = data.get("email");
-    	if(StringUtils.isNumeric(data.get("id"))) {
+    	if(!StringUtils.isEmpty(data.get("id"))) {
     		this.id = Long.parseLong(data.get("id"));
     	}
     }
