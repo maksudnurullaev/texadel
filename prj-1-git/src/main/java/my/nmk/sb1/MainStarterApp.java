@@ -2,9 +2,6 @@ package my.nmk.sb1;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import my.nmk.sb1.components.DumBean;
 import my.nmk.sb1.objects.EmployeeService;
+
+import javax.annotation.*;
 
 @SpringBootApplication
 //@RestController
